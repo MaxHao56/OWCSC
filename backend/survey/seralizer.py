@@ -3,7 +3,21 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 
 
-# Seralizer of Registerartion and table Creation
+
+''' Model Inputs'''
+from .models import Survey
+from .models import Questions
+from .models import Responses
+
+
+
+
+'''
+-> Create Method for user Registration 
+
+-> Meta class for modelserializer
+
+'''
 
 class RegisterSeralizer(serializers.ModelSerializer):
 
@@ -20,9 +34,16 @@ class RegisterSeralizer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
-    
 
 
+
+
+'''
+
+-> Validate method == Checks username and password
+                   == Checks authenciate user status
+
+'''
 class LoginSeralizer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -45,3 +66,40 @@ class LoginSeralizer(serializers.Serializer):
         return user
     
 
+
+'''
+
+-> Model to include all the fields 
+
+'''
+
+
+class SurveySeralizer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Survey
+        fields = ('id','sruvey_name','description')
+    
+
+'''
+
+-> Model to include all the fields
+ 
+'''
+
+class QuestionsSeralizer(serializers.ModelSerializer):
+    class Meta:
+        model  = Questions
+        fields = ('id','question','type')
+
+
+'''
+
+-> Model to include all the fields
+
+'''
+
+class ResponsesSeralizer(serializers.ModelSerializer):
+    class Meta:
+        model = Responses
+        fields = ('id','reponse','user_id')

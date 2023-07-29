@@ -1,7 +1,12 @@
 from django.shortcuts import render
 
+
+'''Serializer Imports'''
 from .seralizer import RegisterSeralizer
 from .seralizer import LoginSeralizer
+from .seralizer import SurveySeralizer
+from .seralizer import QuestionsSeralizer
+from .seralizer import ResponsesSeralizer
 
 
 from rest_framework.decorators import api_view  # API VIEW FOR DATABASE INTERACTIONS
@@ -11,6 +16,14 @@ from rest_framework import status  # Rest Framwork that really took status to di
 from django.contrib.auth import login 
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
+
+
+''' Model Imports'''
+from .models import Survey
+from .models import Questions
+from .models import Responses
+
+
 
 @api_view(['POST'])
 def register_api(request):
@@ -28,13 +41,8 @@ def register_api(request):
 # ISSUE === MUTIPLE KEYS AND REPETITIVE SESSION KEY GENERATION #
 
 '''
-@login()
+-> Validates the crediential of login Users
 
-@authenticate()
-
-@seralization
-
--> user object from validate method from seralizer
 -> Returns session key and infomation of the user
 '''
 @api_view(['POST'])
@@ -67,7 +75,9 @@ def login_api(request):
 
 
 
-
+'''
+-> Authentciated User access through Session Keys
+'''
 
 @api_view(['POST'])
 def user_profile(request):
@@ -82,3 +92,42 @@ def user_profile(request):
     username = session_data.get('user_username')
 
     return Response({'username': username})
+
+
+'''
+-> Returns all Surveys(4)
+'''
+
+@api_view(['GET'])
+def getSurvey(request):
+    surveys = Survey.objects.all()
+    seralizer = SurveySeralizer(surveys,many=True)
+    return Response(seralizer.data)
+
+
+'''
+-> Returns all Questions
+'''
+
+@api_view(['GET'])
+def getQuestions(request):
+    questions = Questions.objects.all()
+    seralizer = QuestionsSeralizer(questions,many=True)
+    return Response(seralizer.data)
+
+
+'''
+-> Returns all Responses
+'''
+@api_view(['GET'])
+def getResponse(request):
+    response = Responses.objects.all()
+    seralizer = QuestionsSeralizer(response,many=True)
+    return Response(seralizer.data)
+
+
+
+
+
+
+

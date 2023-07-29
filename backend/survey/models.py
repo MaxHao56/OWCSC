@@ -18,6 +18,7 @@ class Questions(models.Model):
 -> Model for Responses
 '''
 class Responses(models.Model):
-    response = models.TextField()
+    response = models.JSONField(default=dict)
+    user_id = models.TextField(default='')
 
 
