@@ -6,7 +6,13 @@ from django.shortcuts import render
 
 ''' Homeview'''
 def home_view(request):
-    return render(request,'home.html')
+    return render(request,'login.html')
+
+
+'''Login View'''
+def login_view(request):
+    return render(request,'login.html')
+
 
 
 ''' SurveyView'''

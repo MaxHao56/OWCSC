@@ -14,6 +14,7 @@ from .html import survey_view
 from .html import question_view
 from .html import questions_view
 
+from . import views
 
 urlpatterns = [
     path('api/register',register_api, name='Register API'),
@@ -24,8 +25,12 @@ urlpatterns = [
     path('get_api/response',getResponse,name='Get Responses'),
 
 
-    path('',home_view),
+    path('',home_view,name='home_view'),
     path('survey',survey_view),
     path('question',question_view),
-    path('questions',questions_view)
+    path('questions',questions_view),
+
+
+
+    path('form/',views.process_register_form, name='process_register_form')
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 '''Serializer Imports'''
@@ -13,9 +13,17 @@ from rest_framework.decorators import api_view  # API VIEW FOR DATABASE INTERACT
 from rest_framework.response import Response # Rest framwork for response and HTTP status
 from rest_framework import status  # Rest Framwork that really took status to diverse options
 
+
+from django.http import HttpResponse
+
 from django.contrib.auth import login 
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
+
+
+
+'''Database Imports'''
+from django.contrib.auth.models import User
 
 
 ''' Model Imports'''
@@ -23,6 +31,10 @@ from .models import Survey
 from .models import Questions
 from .models import Responses
 
+
+
+'''Form Model Imports'''
+from .form import Registerform
 
 
 @api_view(['POST'])
@@ -94,6 +106,8 @@ def user_profile(request):
     return Response({'username': username})
 
 
+
+
 '''
 -> Returns all Surveys(4)
 '''
@@ -119,6 +133,7 @@ def getQuestions(request):
 '''
 -> Returns all Responses
 '''
+
 @api_view(['GET'])
 def getResponse(request):
     response = Responses.objects.all()
@@ -131,3 +146,31 @@ def getResponse(request):
 
 
 
+
+'''
+-> Registeration user
+
+-> Redirection
+'''
+
+def process_register_form(request):
+    if request.method == 'POST':
+        form = Registerform(request.POST)
+
+        if form.is_valid():
+            user = User.objects.create_user(
+                username = form.cleaned_data['username'],
+                email = form.cleaned_data['email'],
+                password = form.cleaned_data['password']
+            )
+            return redirect('home_view')
+        else:
+            print('User form is not valid')
+            print(form.errors)  # Print form errors to see which fields caused validation failure
+    else:
+        print('request method is not posted')
+
+    return HttpResponse("An error occurred during form processing.")
+
+
+            
