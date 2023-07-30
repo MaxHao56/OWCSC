@@ -174,3 +174,6 @@ def process_register_form(request):
 
 
             
+def process_login_form(request):
+    if request.method == 'POST':
+        pass
