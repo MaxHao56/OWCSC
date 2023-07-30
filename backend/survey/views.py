@@ -1,4 +1,6 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
 
 
 '''Serializer Imports'''
@@ -16,7 +18,7 @@ from rest_framework import status  # Rest Framwork that really took status to di
 
 from django.http import HttpResponse
 
-from django.contrib.auth import login 
+from django.contrib.auth import login, logout
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
 
@@ -33,8 +35,9 @@ from .models import Responses
 
 
 
-'''Form Model Imports'''
+'''Form  Imports'''
 from .form import Registerform
+from .form import LoginForm
 
 
 @api_view(['POST'])
@@ -101,7 +104,7 @@ def user_profile(request):
         return Response({'Message': 'Invalid session key'}, status=status.HTTP_404_NOT_FOUND)
 
     session_data = session.get_decoded()
-    username = session_data.get('user_username')
+    username = session_data.get('username')
 
     return Response({'username': username})
 
@@ -144,9 +147,6 @@ def getResponse(request):
 
 
 
-
-
-
 '''
 -> Registeration user
 
@@ -173,7 +173,62 @@ def process_register_form(request):
     return HttpResponse("An error occurred during form processing.")
 
 
+
+
+''' STILL WORKING '''
+''' Needs cookies and store in the user's locally to keep session key'''
             
 def process_login_form(request):
     if request.method == 'POST':
-        pass
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            
+
+
+            if email and password:
+                try:
+                    user= User.objects.get(email = email)
+                    if user.check_password(password):
+                        login(request,user)
+                        session = SessionStore()
+                        session['email'] = user.email
+                        session['username'] = user.username
+                        session['id'] = user.id
+                        session.create()
+
+                        print(session.session_key) # Needs to store the session key in cookies
+
+
+                except User.DoesNotExist:
+                    return Response({'Message':'It is not valid'},status=status.HTTP_400_BAD_REQUEST)
+
+            else: return Response({'Message':"User is None"},status=status.HTTP_404_NOT_FOUND)
+   
+
+   
+    
+    return HttpResponse("An error occurred during form processing.")
+    
+
+
+@api_view(['POST'])
+def process_logout(request):
+    # if request.method == 'POST':
+        logout(request)
+        session_key = request.data.get('session_key')
+
+        session = Session.objects.get(session_key=session_key)
+        session.expire_date = timezone.now()
+        session.save()
+
+        now = timezone.now()
+        expired_sessions = Session.objects.filter(expire_date__lt=now)
+
+    # Deleting the expired sessions
+        num_deleted, _ = expired_sessions.delete()
+
+        return Response({'message':"done"},status=status.HTTP_200_OK)
+        

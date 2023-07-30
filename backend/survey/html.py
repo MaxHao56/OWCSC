@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 ''' Homeview'''
 def home_view(request):
-    return render(request,'login.html')
+    return render(request,'register.html')
 
 
 '''Login View'''
