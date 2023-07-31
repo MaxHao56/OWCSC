@@ -1,0 +1,37 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: beige;
+}
+
+.container {
+  text-align: center;
+}
+
+.buttons {
+  margin-bottom: 20px;
+}
+
+.login-button,
+.register-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: white; /* Changed button background color to white */
+  color: black; /* Changed text color to black */
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.login-button:hover,
+.register-button:hover {
+  background-color: #45a049;
+}
+
+.login-button:focus,
+.register-button:focus {
+  outline: none;
+}

@@ -153,6 +153,9 @@ def getResponse(request):
 -> Redirection
 '''
 
+''' STILL WORKING'''
+''' Needs Eamil to be verfiied making sure its unique'''
+
 def process_register_form(request):
     if request.method == 'POST':
         form = Registerform(request.POST)
@@ -163,7 +166,7 @@ def process_register_form(request):
                 email = form.cleaned_data['email'],
                 password = form.cleaned_data['password']
             )
-            return redirect('home_view')
+            return redirect('login_view')
         else:
             print('User form is not valid')
             print(form.errors)  # Print form errors to see which fields caused validation failure
@@ -175,8 +178,7 @@ def process_register_form(request):
 
 
 
-''' STILL WORKING '''
-''' Needs cookies and store in the user's locally to keep session key'''
+
             
 def process_login_form(request):
     if request.method == 'POST':
@@ -197,9 +199,18 @@ def process_login_form(request):
                         session['email'] = user.email
                         session['username'] = user.username
                         session['id'] = user.id
-                        session.create()
+                        session.save()
 
-                        print(session.session_key) # Needs to store the session key in cookies
+                     
+
+                        
+
+                        
+                        key = session.session_key
+                        response = redirect('home_view')
+                        response.set_cookie('session_key',key)
+           
+                        return response
 
 
                 except User.DoesNotExist:
@@ -214,6 +225,7 @@ def process_login_form(request):
     
 
 
+
 @api_view(['POST'])
 def process_logout(request):
     # if request.method == 'POST':
@@ -226,6 +238,8 @@ def process_logout(request):
 
         now = timezone.now()
         expired_sessions = Session.objects.filter(expire_date__lt=now)
+
+        
 
     # Deleting the expired sessions
         num_deleted, _ = expired_sessions.delete()

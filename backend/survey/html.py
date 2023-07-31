@@ -6,8 +6,11 @@ from django.shortcuts import render
 
 ''' Homeview'''
 def home_view(request):
-    return render(request,'register.html')
+    return render(request,'home.html')
 
+''' Register View'''
+def register_view(request):
+    return render(request,'register.html')
 
 '''Login View'''
 def login_view(request):
@@ -28,3 +31,5 @@ def questions_view(request):
 ''' QuestionView'''
 def question_view(request):
     return render(request, 'question.html')
+
+
