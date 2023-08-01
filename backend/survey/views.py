@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
+import json
 
 
 '''Serializer Imports'''
@@ -225,12 +226,12 @@ def process_login_form(request):
     
 
 
-
-@api_view(['POST'])
+# @api_view(['POST'])
 def process_logout(request):
-    # if request.method == 'POST':
+    if request.method == 'POST':
+        data = json.loads(request.body)
         logout(request)
-        session_key = request.data.get('session_key')
+        session_key = data.get('session_key')
 
         session = Session.objects.get(session_key=session_key)
         session.expire_date = timezone.now()
@@ -242,7 +243,11 @@ def process_logout(request):
         
 
     # Deleting the expired sessions
-        num_deleted, _ = expired_sessions.delete()
+        expired_sessions.delete()
 
-        return Response({'message':"done"},status=status.HTTP_200_OK)
+        reponse = redirect('home_view')
+  
+        reponse.set_cookie('session_key',session_key, max_age=1)
+
+        return reponse
         

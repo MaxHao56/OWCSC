@@ -36,6 +36,7 @@ urlpatterns = [
 
     path('form/',views.process_register_form, name='process_register_form'),
     path('loginform',views.process_login_form,name='process_login_form'),
+    path('logoutform',views.process_logout,name='process_logout')
     
     
     
