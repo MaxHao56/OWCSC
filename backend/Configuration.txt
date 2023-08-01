@@ -1,0 +1,24 @@
+# Database Configuration #
+
+PostgresSQL
+
+-> database name = 'OWCSC'
+-> database user = 'user' [Should Create another manager in manging this database]
+-> database password = 'password'
+
+
+
+# Framwork Configuration #
+
+RestFramework Configuration
+
+-> BasicAuthentication
+-> SessionAuthentication [Both are in the ]
+
+
+
+# Routing Configuration #
+
+Static template Configuration
+
+-> Static Url to static

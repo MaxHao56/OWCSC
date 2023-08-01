@@ -226,7 +226,7 @@ def process_login_form(request):
     
 
 
-# @api_view(['POST'])
+
 def process_logout(request):
     if request.method == 'POST':
         data = json.loads(request.body)
