@@ -1,0 +1,2 @@
+CREATE USER user WITH PASSWORD "password";
+GRANT ALL PRIVILEGES ON SCHEMA public TO user;

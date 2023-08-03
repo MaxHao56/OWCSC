@@ -1,12 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <body>
 
 <h1>This is Survey page </h1>
-<h5>Emotional</h5>
-<h5>Physical</h5>
-<h5>Spritial</h5>
-<h5>Mental</h5>
+{% for survey in surveys %}
+
+<h5><a href="{% url 'questions' survey.survey_name %}">{{ survey.survey_name }}</a></h5>
+
+{% endfor %}
 
 </body>
 </html>

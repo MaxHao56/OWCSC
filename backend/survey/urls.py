@@ -8,11 +8,12 @@ from .views import user_profile
 
 
 from . import html
-from .html import survey_view
+from .html import SurveyListView, QuestionsListView, ResultsView
 from .html import question_view
-from .html import questions_view
 
 from . import views
+
+
 
 urlpatterns = [
 
@@ -25,14 +26,10 @@ urlpatterns = [
     path('login',html.login_view, name='login_view'),
     path('',html.home_view,name='home_view'),
 
-
-
-
-
-    path('survey',survey_view),
+    path('list/', SurveyListView.as_view(), name='survey'),
     path('question',question_view),
-    path('questions',questions_view),
-
+    path('list/<str:survey_name>/', QuestionsListView.as_view(), name = 'questions'),
+    path('list/<str:survey_name>/results', ResultsView.as_view() ,name='results'),
 
     path('form/',views.process_register_form, name='process_register_form'),
     path('loginform',views.process_login_form,name='process_login_form'),

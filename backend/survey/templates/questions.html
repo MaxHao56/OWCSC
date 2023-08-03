@@ -2,7 +2,17 @@
 <html>
 <body>
 
-<h1>Questions for each survey</h1>
 
+<form method="post">
+    {% csrf_token %}
+    {% for question in questions %}
+        <h3>{{ question.name }}</h3>
+        <p>{{ question.question }}</p>
+        <input type="radio" name="question_{{ question.id }}" value="yes"> YES
+        <input type="radio" name="question_{{ question.id }}" value="no"> NO
+        <br>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>
