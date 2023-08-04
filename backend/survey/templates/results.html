@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h2>Results for {{  survey  }} survey</h2>
+    {% for response in responses %}
+        {{ response.question.name }}
+        {{ response.response }}
+        <br>
+    {% endfor %}
+
+</head>
+<body>
+
+</body>
+</html>
